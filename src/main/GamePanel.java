@@ -8,28 +8,31 @@ import java.awt.Graphics2D;
 import javax.swing.JPanel;
 
 import entity.Player;
+import tile.TileManager;
 //blue print ... we used JPanel and add our rule also 
 public class GamePanel extends JPanel implements Runnable{
 	//gonna write screen settings in it
 	final int originalTileSize= 16;//size of every character and tile use 16 because its standered 
 	final int scale = 3;
 	public final int tileSize = originalTileSize * scale;// the OG 16 is to small to make it bigger.
-	final int maxScreenCol=16;
-	final int maxScreenRow=12;
-	final int screenWidth =tileSize*maxScreenCol;
-	final int screenHight = tileSize*maxScreenRow;
+	public final int maxScreenCol=16;
+	public final int maxScreenRow=12;
+	public final int screenWidth =tileSize*maxScreenCol;
+	public final int screenHight = tileSize*maxScreenRow;
 	//fps
 	int FPS =60;
+	
+	TileManager tileM =new TileManager(this);//4L 
 	KeyHandler keyH = new KeyHandler();
 	Thread gameThread;
 	Player player = new Player(this,keyH);
 	
 	
 	
-	//set players default postion
+	/*//set players default postion
 	int playerX =100;
 	int playerY= 100;
-	int playerSpeed = 4;
+	int playerSpeed = 4; done in playerclass(3L)*/
 	//constructor run when created it 
 	public GamePanel (){
 		this.setPreferredSize(new Dimension(screenWidth,screenHight));
@@ -138,7 +141,9 @@ public class GamePanel extends JPanel implements Runnable{
        /* g2.setColor(Color.white);	
         g2.fillRect(playerX, playerY, tileSize, tileSize);
         		gonna make it seprate because in future we gonna write this for different differnt entites*/
-       player.draw(g2);
+       
+		tileM.draw(g2);//4L must place before player.draw because its like leyer
+		player.draw(g2);
        g2.dispose();
 	
 	}

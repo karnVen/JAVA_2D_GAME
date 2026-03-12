@@ -6,12 +6,14 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 
 import javax.swing.JPanel;
+
+import entity.Player;
 //blue print ... we used JPanel and add our rule also 
 public class GamePanel extends JPanel implements Runnable{
 	//gonna write screen settings in it
 	final int originalTileSize= 16;//size of every character and tile use 16 because its standered 
 	final int scale = 3;
-	final int tileSize = originalTileSize * scale;// the OG 16 is to small to make it bigger.
+	public final int tileSize = originalTileSize * scale;// the OG 16 is to small to make it bigger.
 	final int maxScreenCol=16;
 	final int maxScreenRow=12;
 	final int screenWidth =tileSize*maxScreenCol;
@@ -20,6 +22,8 @@ public class GamePanel extends JPanel implements Runnable{
 	int FPS =60;
 	KeyHandler keyH = new KeyHandler();
 	Thread gameThread;
+	Player player = new Player(this,keyH);
+	
 	
 	
 	//set players default postion
@@ -106,7 +110,7 @@ public class GamePanel extends JPanel implements Runnable{
 //		}
 //	}
 	public void update() {
-		if(keyH.upPressed ==true) {
+/*		if(keyH.upPressed ==true) {
 			playerY -= playerSpeed;
 		}
 		else if (keyH.downPressed == true) {
@@ -115,7 +119,10 @@ public class GamePanel extends JPanel implements Runnable{
 			playerX -= playerSpeed;
 		}else if (keyH.rightPressed==true) {
 			playerX += playerSpeed;
+			
 		}
+		gonna make it seprate because in future we gonna write this for different differnt entites*/
+		player.update();//that comment code from player specifc class 
 	}
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -128,9 +135,11 @@ public class GamePanel extends JPanel implements Runnable{
 //	
 		Graphics2D g2 = (Graphics2D)g;
 		//graphics2d class extends the graphics class to provide more sophisticated control over geometry , coordinate transformation , color management, and text layout
-        g2.setColor(Color.white);	
+       /* g2.setColor(Color.white);	
         g2.fillRect(playerX, playerY, tileSize, tileSize);
-        g2.dispose();
+        		gonna make it seprate because in future we gonna write this for different differnt entites*/
+       player.draw(g2);
+       g2.dispose();
 	
 	}
 	

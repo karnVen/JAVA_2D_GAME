@@ -13,15 +13,23 @@ import main.KeyHandler;
 public class Player extends Entity{
 	GamePanel gp;
 	KeyHandler keyH;
+	
+	public final int screenX;
+	public final int screenY;
+		
 	public Player(GamePanel gp,KeyHandler keyH) {
 		this.gp=gp;//references
 		this.keyH=keyH;
+		
+		screenX=gp.screenWidth/2 - (gp.tileSize/2);
+		screenY=gp.screenHight/2 - (gp.tileSize/2);
+		
 		setDefaultValues();
 		getPlayerImage();
 	}
 	public void setDefaultValues() {
-		x=100;
-		y=100;
+		worldX=gp.tileSize*23;//its tells players postion 
+		worldY=gp.tileSize*21;
 		speed =4;
 		direction = "down";
 	}	
@@ -46,17 +54,17 @@ public void update() {
 	if(keyH.upPressed==true||keyH.downPressed==true||keyH.leftPressed==true||keyH.rightPressed==true) {
 	if(keyH.upPressed ==true) {
 		direction ="up";//did because gonna use player (3L)
-		y -= speed;
+		worldY -= speed;
 	}
 	else if (keyH.downPressed == true) {
 		direction ="down";
-		y += speed;
+		worldY += speed;
 	}else if(keyH.leftPressed == true) {
 		direction ="left";
-		x -= speed;
+		worldX -= speed;
 	}else if (keyH.rightPressed==true) {
 		direction ="right";
-		x += speed;
+		worldX += speed;
 	}
 	spriteCounter++;  //this update function called 60 times per seconds becauese it inside our gameloop (Gamepanel.java)
 	if(spriteCounter>10) {
@@ -100,6 +108,7 @@ public void draw(Graphics2D g2) {
 		if(spriteNum==2) {
 		image =left2;
 		}
+		
 		break;
 	case "right":
 		if(spriteNum==1) {
@@ -110,6 +119,7 @@ public void draw(Graphics2D g2) {
 		}
 		break;
 	}
-	g2.drawImage(image, x, y, gp.tileSize,gp.tileSize,null);
+	//g2.drawImage(image, x, y, gp.tileSize,gp.tileSize,null);
+	g2.drawImage(image, screenX,screenY, gp.tileSize,gp.tileSize,null);//5L
 }
 }

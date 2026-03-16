@@ -19,9 +19,10 @@ public class TileManager {
 		this.gp = gp;
 		tile = new Tile[10];//this mean gonna create 10 type of tiles
 		
-		mapTileNum = new int [gp.maxScreenCol][gp.maxScreenRow];//what we gonna do that ki put all the map data in this array (4L)
+		//mapTileNum = new int [gp.maxScreenCol][gp.maxScreenRow];//what we gonna do that ki put all the map data in this array (4L)
+		mapTileNum = new int [gp.maxWorldCol][gp.maxWorldRow];//5L
 		getTileImage();
-		loadMap("/maps/map01.txt");//4L
+		loadMap("/maps/world01.txt");//4L
 		
 	}
 	
@@ -35,6 +36,15 @@ public class TileManager {
 		    
 			tile[2]=new Tile();
 			tile[2].image =ImageIO.read(getClass().getResourceAsStream("/tiles/water.png"));//created image in tile class 
+			
+			tile[3]=new Tile();
+			tile[3].image =ImageIO.read(getClass().getResourceAsStream("/tiles/earth.png"));//created image in tile class
+			
+			tile[4]=new Tile();
+			tile[4].image =ImageIO.read(getClass().getResourceAsStream("/tiles/tree.png"));//created image in tile class 
+			
+			tile[5]=new Tile();
+			tile[5].image =ImageIO.read(getClass().getResourceAsStream("/tiles/sand.png"));//created image in tile class 
 		
 		}catch(IOException e) {
 			e.printStackTrace();
@@ -50,12 +60,12 @@ public class TileManager {
 			int col =0;
 			int row=0;
 			
-			while(col < gp.maxScreenCol && row < gp.maxScreenRow) {
+			while(col < gp.maxWorldCol && row < gp.maxWorldRow) {
 			
 				String line = br.readLine();//fist br get the content this one gets the line 
 				
 				
-				while(col<gp.maxScreenCol) {
+				while(col<gp.maxWorldCol) {
 					String numbers[] = line.split(" ");//get a indivisual number from line and stors in number like number[0] =0,number[1]=1 like that 
 					int num = Integer.parseInt(numbers[col]);//use col as an index for nubers [] array
 					
@@ -63,7 +73,7 @@ public class TileManager {
 					col++;// continue this until everything in the numbers[] is stored in the maptilenum[][]
 					
 				}
-				if(col == gp.maxScreenCol) {
+				if(col == gp.maxWorldCol) {
 					col =0;
 					row++;
 				
@@ -79,7 +89,7 @@ public class TileManager {
 	}
 	public void draw(Graphics2D g2) {
 		//g2.drawImage(tile[0].image,0,0,gp.tileSize,gp.tileSize,null);  its not efficiant way to create a tiles so we will create a loop
-		int col =0;
+		/*int col =0;
 		int row=0;
 		int x =0;
 		int y =0;
@@ -99,7 +109,37 @@ public class TileManager {
 				row++;
 				y+= gp.tileSize;
 			}
-		}
+		}*/
+		
+		//5L -- for world map and campra logic
+		
+		//worldX is the place the tile exits in world map 
+		//screenX is the place we want that tile to display at screen
+		int worldCol =0;
+		int worldRow=0;
+		while(worldCol<gp.maxWorldCol && worldRow<gp.maxWorldRow) {
+			int tileNum=mapTileNum[worldCol][worldRow];
+			
+			int worldX = worldCol * gp.tileSize;
+			int worldY = worldRow * gp.tileSize;
+			int screenX=worldX-gp.player.worldX + gp.player.screenX;
+			int screenY=worldY-gp.player.worldY+ gp.player.screenY;
+			
+			//reding only the screen tile
+			if (worldX  + gp.tileSize> gp.player.worldX - gp.player.screenX &&
+					worldX - gp.tileSize<gp.player.worldX + gp.player.screenX &&
+					worldY + gp.tileSize>gp.player.worldY - gp.player.screenY &&
+					worldY - gp.tileSize<gp.player.worldY + gp.player.screenY) {
+				g2.drawImage(tile[tileNum].image,screenX,screenY,gp.tileSize,gp.tileSize,null);
+				
+			}
+			worldCol++;
+			
+			if(worldCol == gp.maxWorldCol) {
+				worldCol =0;
+				worldRow++;
+			}
+		}                                      
 		
 	}
 

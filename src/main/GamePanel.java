@@ -12,6 +12,7 @@ import tile.TileManager;
 //blue print ... we used JPanel and add our rule also 
 public class GamePanel extends JPanel implements Runnable{
 	//gonna write screen settings in it
+	//SCREEN SETTINGS
 	final int originalTileSize= 16;//size of every character and tile use 16 because its standered 
 	final int scale = 3;
 	public final int tileSize = originalTileSize * scale;// the OG 16 is to small to make it bigger.
@@ -19,13 +20,19 @@ public class GamePanel extends JPanel implements Runnable{
 	public final int maxScreenRow=12;
 	public final int screenWidth =tileSize*maxScreenCol;
 	public final int screenHight = tileSize*maxScreenRow;
+	
+	//WORLD SETTINGS
+	public final int maxWorldCol=50;
+	public final int maxWorldRow=50;
+	public final int worldHight = tileSize* maxWorldRow;
+	public final int worldWidth= tileSize* maxWorldCol;
 	//fps
 	int FPS =60;
 	
 	TileManager tileM =new TileManager(this);//4L 
 	KeyHandler keyH = new KeyHandler();
 	Thread gameThread;
-	Player player = new Player(this,keyH);
+	public Player player = new Player(this,keyH);
 	
 	
 	
